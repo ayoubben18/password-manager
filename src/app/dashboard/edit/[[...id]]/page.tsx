@@ -8,7 +8,7 @@ const page = async ({params}:{params:{id:number}}) => {
     if (!password) redirect('/dashboard')
 
     return (
-        <div className=' flex items-center justify-center pt-6'>
+        <div className=' flex items-center justify-center pt-6 h-screen'>
             <FormCard editing={true} pass={password} />
         </div>
     )

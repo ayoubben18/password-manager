@@ -4,6 +4,8 @@ import {db} from "@/db";
 import {passwords, PasswordType} from "@/db/schema";
 import {eq} from "drizzle-orm";
 import CryptoJS from 'crypto-js';
+import {revalidateTag, unstable_cache as cache} from "next/cache";
+
 const key = process.env.KEY_STRING!
 
 
@@ -41,7 +43,7 @@ export async function getPasswords():Promise<PasswordType[]> {
     return data
 }
 
-export async function getPassword(id:number) : Promise<PasswordType> {
+export async function getPassword(id:number) : Promise<PasswordType | null> {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
     if (!user) {
@@ -49,9 +51,9 @@ export async function getPassword(id:number) : Promise<PasswordType> {
     }
     const pass  = await db.select().from(passwords).where(eq(passwords.id, id))
 
-    if(!pass)
+    if(pass.length===0)
     {
-        return Promise.reject({ status: 404, error: "Password not found" });
+        return null;
     }
     pass[0].password=CryptoJS.AES.decrypt(pass[0].password, key)
         .toString(CryptoJS.enc.Utf8)
@@ -80,4 +82,5 @@ export async function deletePassword(id:number) {
         return Promise.reject({ status: 401, error: "User not found" });
     }
     await db.delete(passwords).where(eq(passwords.id, id))
+
 }

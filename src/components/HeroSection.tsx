@@ -9,7 +9,7 @@ export const HeroSection =async() => {
     const user = await getUser();
     return (
         <div className='flex flex-col text-center container gap-4 items-center justify-center h-screen'>
-            <h1 className='font-extrabold text-4xl sm:text-7xl'>PASSWORD MANAGER</h1>
+            <h1 className='font-extrabold text-6xl sm:text-7xl'>PASSWORD MANAGER</h1>
             <p className='font-medium text-lg'>Manage your passwords in one place</p>
             {user ?
                 <Button variant="secondary"><Link href="/dashboard">Go to Dashboard</Link></Button>

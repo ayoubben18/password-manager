@@ -9,6 +9,9 @@ import {Button} from "@/components/ui/button";
 import {Mail} from "lucide-react";
 import {LoginLink, RegisterLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {useRouter} from "next/navigation";
+import {deletePassword} from "@/app/actions";
+import {useMutation} from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 interface Props{
     id:number
@@ -20,6 +23,21 @@ interface Props{
 
 export const PasswordAccordion = ({id,createdAt,platform,password,email}:Props) => {
     const router = useRouter()
+    const {mutate,isPending}= useMutation({
+        mutationFn:deletePassword,
+        mutationKey:["passwords"],
+        onSuccess:()=>{
+            //tost deleted
+            toast.success("Password Deleted !!")
+            router.refresh()
+        },
+        onError:(error)=>{
+            toast.error(error.message)
+        }
+    })
+    const handleDelete =()=>{
+        mutate(id)
+    }
     return (
         <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
@@ -35,7 +53,7 @@ export const PasswordAccordion = ({id,createdAt,platform,password,email}:Props) 
                     <Button variant="outline" onClick={() => router.push(`/dashboard/edit/${id}`)}>
                         Edit
                     </Button>
-                    <Button variant="destructive">
+                    <Button variant="destructive" onClick={handleDelete} disabled={isPending}>
                         Delete
                     </Button>
                 </AccordionContent>

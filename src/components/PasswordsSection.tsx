@@ -28,8 +28,8 @@ export const PasswordsSection =   () => {
     if(isLoading){
         return <div className='text-center text-3xl font-bold'>Loading...</div>
     }
-    if(!pass){
-        return <div className='text-center text-3xl font-bold'>No Passwords Found</div>
+    if(pass?.length ===0 || !pass){
+        return <div className='pt-5 text-center text-3xl font-bold'>No Passwords Found</div>
     }
     return (
         <div className='flex flex-col gap-2 text-2xl'>
