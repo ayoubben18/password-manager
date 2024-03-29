@@ -8,7 +8,7 @@ const page = async () => {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
     return (
-        <div className='flex flex-col h-screen container gap-4 py-5'>
+        <div className='flex flex-col min-h-screen container gap-4 py-5'>
             <InputSearch/>
             <Suspense fallback={<div>Loading...</div>}><PasswordsSection/></Suspense>
         </div>
